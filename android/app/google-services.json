@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "430525614074",
+    "project_id": "cityhero-88332",
+    "storage_bucket": "cityhero-88332.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430525614074:android:1a4828b1bcd4ea87fec643",
+        "android_client_info": {
+          "package_name": "group_b.members.city_hero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430525614074-0no6l4l7cj0mkptjdl49fkgu3ctivf14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCHvI3se6uD5x0w7OuQufmzc5Q6zrSkho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430525614074-0no6l4l7cj0mkptjdl49fkgu3ctivf14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
