@@ -34,6 +34,7 @@ class Settings extends StatelessWidget {
                       title: 'Logout',
                       middleText: 'Are you sure?',
                       textCancel: 'Cancel',
+                      confirmTextColor: Colors.white,
                       textConfirm: 'Yes',
                       onConfirm: () => controller.signOutUser());
                 },
