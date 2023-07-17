@@ -158,7 +158,11 @@ class HomePage extends StatelessWidget {
                     )
                   : CircleAvatar(
                       backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, size: 40),
+                      child: Icon(
+                        Icons.person,
+                        size: 55,
+                        color: Colors.white,
+                      ),
                       radius: 50,
                     ),
               const SizedBox(height: 20),
