@@ -1,11 +1,18 @@
+import 'package:city_hero/screens/home/alerts/details/alerts.dart';
+import 'package:city_hero/screens/home/mapview/map.dart';
+import 'package:city_hero/screens/home/profile/profile_controller.dart';
+import 'package:city_hero/screens/home/safetytips/safety_tips.dart';
 import 'package:city_hero/screens/home/settings/settings.dart';
 import 'package:city_hero/screens/home/profile/profile.dart';
+import 'package:city_hero/screens/home/support/support.dart';
+import 'package:city_hero/screens/home/terms/terms.dart';
+import 'package:city_hero/widgets/textwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../../../database/firebase_constants.dart';
 import '../../../widgets/home_item.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,16 +24,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF16104a),
         title: Row(
           children: [
-            const SizedBox(width: 30),
+            Expanded(
+              child: Container(),
+            ),
             Text(
               'HOME',
               style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Colors.white),
             ),
             Expanded(
               child: Container(),
@@ -37,7 +46,7 @@ class HomePage extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: Colors.white,
                 ))
           ],
         ),
@@ -115,21 +124,128 @@ class HomePage extends StatelessWidget {
                   color: Colors.purple,
                 ),
               ])),
-      bottomNavigationBar: GNav(
-        hoverColor: Colors.grey,
-        curve: Curves.easeOutExpo,
-        duration: Duration(milliseconds: 600),
-        gap: 8,
-        color: Colors.grey[800],
-        activeColor: Color.fromARGB(255, 180, 91, 91),
-        iconSize: 27,
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-        tabs: [
-          GButton(icon: Icons.home, text: 'Home'),
-          GButton(icon: Icons.search, text: 'Search'),
-          GButton(icon: Icons.person_2, text: 'Profile'),
-        ],
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                MyHeader(),
+                MyDrawerList(context),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
+
+  MyHeader() => Container(
+        height: 200,
+        width: double.infinity,
+        color: Color(0xFF16104a),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProfileController.instance.profilePath.value != ''
+                  ? Obx(
+                      () => CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            ProfileController.instance.profilePath.toString()),
+                        radius: 50,
+                      ),
+                    )
+                  : CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      child: Icon(Icons.person, size: 40),
+                      radius: 50,
+                    ),
+              const SizedBox(height: 20),
+              TextWidget(
+                  size: 12,
+                  text: '${auth.currentUser!.email}',
+                  bold: false,
+                  color: Colors.white),
+              Obx(() => TextWidget(
+                  size: 15,
+                  text: '${ProfileController.instance.profileName.value}',
+                  bold: true,
+                  color: Colors.white))
+            ],
+          ),
+        ),
+      );
+
+  MyDrawerList(context) => Container(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Column(
+            children: [
+              DrawerItem(Icons.home, 'News Feeds', () {
+                Navigator.pop(context);
+                Get.to(() => HomePage());
+              }),
+              DrawerItem(Icons.notification_important_rounded, 'Alerts', () {
+                Navigator.pop(context);
+                Get.to(() => Alerts());
+              }),
+              DrawerItem(Icons.map, 'Map', () {
+                Navigator.pop(context);
+                Get.to(() => MapViews());
+              }),
+              DrawerItem(Icons.support, 'Support', () {
+                Navigator.pop(context);
+                Get.to(() => Support());
+              }),
+              DrawerItem(Icons.person, 'Profile', () {
+                Navigator.pop(context);
+                Get.to(() => Profile());
+              }),
+              DrawerItem(Icons.chair_rounded, 'Terms and Policies', () {
+                Navigator.pop(context);
+                Get.to(() => Terms());
+              }),
+              DrawerItem(Icons.safety_check, 'Safety Tips', () {
+                Navigator.pop(context);
+                Get.to(() => SafetyTips());
+              }),
+              DrawerItem(Icons.settings, 'Settings', () {
+                Navigator.pop(context);
+                Get.to(() => Settings());
+              }),
+            ],
+          ),
+        ),
+      );
+
+  Widget DrawerItem(IconData icon, String text, VoidCallback onTap) => Material(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Icon(
+                    icon,
+                    size: 20,
+                    color: Color(
+                      0xFF16104a,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: TextWidget(
+                    size: 17,
+                    text: text,
+                    bold: false,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
 }
