@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(HomeController());
+    final controller = Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -129,7 +129,7 @@ class HomePage extends StatelessWidget {
           child: Container(
             child: Column(
               children: [
-                MyHeader(),
+                MyHeader(controller),
                 MyDrawerList(context),
               ],
             ),
@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  MyHeader() => Container(
+  MyHeader(ProfileController controller) => Container(
         height: 200,
         width: double.infinity,
         color: Color(0xFF16104a),
@@ -148,11 +148,11 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ProfileController.instance.profilePath.value != ''
+              controller.profilePath.value != ''
                   ? Obx(
                       () => CircleAvatar(
                         backgroundImage: NetworkImage(
-                            ProfileController.instance.profilePath.toString()),
+                            controller.profilePath.value.toString()),
                         radius: 50,
                       ),
                     )
@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
                   color: Colors.white),
               Obx(() => TextWidget(
                   size: 15,
-                  text: '${ProfileController.instance.profileName.value}',
+                  text: '${controller.profileName.value}',
                   bold: true,
                   color: Colors.white))
             ],
