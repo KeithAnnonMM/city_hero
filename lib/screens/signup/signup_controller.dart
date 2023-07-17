@@ -56,6 +56,9 @@ class SignUpController extends GetxController {
     if (field == null || field.isEmpty) {
       return 'Field can not be empty';
     }
+    if (field.length > 25) {
+      return 'Name is too long';
+    }
     return null;
   }
 

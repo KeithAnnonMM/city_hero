@@ -19,10 +19,10 @@ class Profile extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF16104a),
         leading: IconButton(
             onPressed: () => Get.back(),
-            icon: Icon(Icons.arrow_back, color: Colors.black)),
+            icon: Icon(Icons.arrow_back, color: Colors.white)),
         title: Row(
           children: [
             Text(
@@ -30,7 +30,7 @@ class Profile extends StatelessWidget {
               style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Colors.white),
             ),
           ],
         ),
@@ -43,6 +43,9 @@ class Profile extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   UserModel userModel = snapshot.data as UserModel;
+                  controller.nameTemp.value = userModel.fullName.toString();
+                  controller.profilePath.value = userModel.imagePath.toString();
+                  controller.profileName.value = userModel.fullName.toString();
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -104,9 +107,199 @@ class Profile extends StatelessWidget {
                       ),
                       const SizedBox(height: 80),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(70, 50, 20, 10),
+                        padding: const EdgeInsets.fromLTRB(30, 20, 30, 5),
                         child: Column(
                           children: [
+                            userModel.about == ''
+                                ? controller.bioTemp == ''
+                                    ? InkWell(
+                                        onTap: () {
+                                          Get.bottomSheet(Container(
+                                            height: (MediaQuery.of(context)
+                                                    .size
+                                                    .height) /
+                                                4,
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 20, 20, 20),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                TextWidget(
+                                                  size: 15,
+                                                  text: 'Add Bio',
+                                                  bold: true,
+                                                ),
+                                                const SizedBox(height: 10),
+                                                TextField(
+                                                  controller:
+                                                      controller.bioText,
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Your Text Goes here",
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                SubmitButton(
+                                                    text: 'Save',
+                                                    ontap: () {
+                                                      controller.bioTemp.value =
+                                                          controller
+                                                              .bioText.text;
+                                                      controller.pushBioToDb(
+                                                          userModel,
+                                                          controller
+                                                              .bioText.text);
+                                                    })
+                                              ],
+                                            ),
+                                          ));
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 80.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.add,
+                                                color: Colors.blue,
+                                                size: 14,
+                                              ),
+                                              TextWidget(
+                                                size: 14,
+                                                text: 'Add Bio',
+                                                bold: false,
+                                                color: Colors.blue,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : Row(
+                                        children: [
+                                          Icon(Icons.cases_outlined, size: 20),
+                                          const SizedBox(width: 40),
+                                          Obx(() => Flexible(
+                                                child: TextWidget(
+                                                  size: 14,
+                                                  text:
+                                                      '${controller.bioTemp.value}',
+                                                  bold: false,
+                                                ),
+                                              )),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.edit, size: 15),
+                                          ),
+                                        ],
+                                      )
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(Icons.cases_outlined, size: 20),
+                                      const SizedBox(width: 40),
+                                      Flexible(
+                                        child: TextWidget(
+                                          size: 14,
+                                          text: '${userModel.about}',
+                                          bold: false,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      IconButton(
+                                        onPressed: () {
+                                          Get.bottomSheet(Container(
+                                            height: (MediaQuery.of(context)
+                                                    .size
+                                                    .height) /
+                                                4,
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 20, 20, 20),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                TextWidget(
+                                                  size: 15,
+                                                  text: 'Add Bio',
+                                                  bold: true,
+                                                ),
+                                                const SizedBox(height: 10),
+                                                TextField(
+                                                  controller:
+                                                      controller.bioText,
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Your Text Goes here",
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                SubmitButton(
+                                                    text: 'Save',
+                                                    ontap: () {
+                                                      controller.bioTemp.value =
+                                                          controller
+                                                              .bioText.text;
+                                                      controller.pushBioToDb(
+                                                          userModel,
+                                                          controller
+                                                              .bioText.text);
+                                                      controller.bioText
+                                                          .clear();
+                                                    })
+                                              ],
+                                            ),
+                                          ));
+                                        },
+                                        icon: Icon(Icons.edit, size: 15),
+                                      ),
+                                    ],
+                                  ),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Icon(Icons.person, size: 20),
@@ -114,18 +307,87 @@ class Profile extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextWidget(
-                                      size: 14,
-                                      text: '${userModel.fullName}',
-                                      bold: true,
-                                    ),
+                                    Obx(() => TextWidget(
+                                          size: 14,
+                                          text: '${controller.nameTemp.value}',
+                                          bold: true,
+                                        )),
                                     TextWidget(
                                       size: 12,
                                       text: '${controller.user.email}',
                                       bold: false,
                                     ),
                                   ],
-                                )
+                                ),
+                                Expanded(child: Container()),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  onPressed: () {
+                                    Get.bottomSheet(Container(
+                                      height:
+                                          (MediaQuery.of(context).size.height) /
+                                              4,
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          TextWidget(
+                                            size: 15,
+                                            text: 'Edit Full Name',
+                                            bold: true,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          TextField(
+                                            controller: controller.nameText,
+                                            decoration: InputDecoration(
+                                              hintText: "Your Fullname",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.white,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.white,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          SubmitButton(
+                                            text: 'Save',
+                                            ontap: () {
+                                              if (controller
+                                                      .nameText.text.length >
+                                                  25) {
+                                                Get.snackbar('Error',
+                                                    'Name is too long');
+                                              } else {
+                                                controller.nameTemp.value =
+                                                    controller.nameText.text;
+                                                controller.pushNameToDb(
+                                                    userModel,
+                                                    controller.nameText.text);
+                                                controller.nameText.clear();
+                                                controller.profileName.value =
+                                                    controller.nameText.text;
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ));
+                                  },
+                                  icon: Icon(Icons.edit, size: 15),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 10),
@@ -137,6 +399,12 @@ class Profile extends StatelessWidget {
                                   size: 14,
                                   text: '${userModel.location}',
                                   bold: false,
+                                ),
+                                Expanded(child: Container()),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.edit, size: 15),
                                 ),
                               ],
                             ),
@@ -150,15 +418,25 @@ class Profile extends StatelessWidget {
                                   text: '${userModel.contact}',
                                   bold: false,
                                 ),
+                                Expanded(child: Container()),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.edit, size: 15),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 20),
-                            SubmitButton(
-                                text: 'Save Changes',
-                                ontap: () {
-                                  controller.pushImageToDb(userModel);
-                                  controller.resetIsSelected();
-                                }),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0, right: 50),
+                              child: SubmitButton(
+                                  text: 'Save Changes',
+                                  ontap: () {
+                                    controller.pushImageToDb(userModel);
+                                    controller.resetIsSelected();
+                                  }),
+                            ),
                           ],
                         ),
                       )
@@ -203,16 +481,6 @@ class Profile extends StatelessWidget {
                         radius: 80,
                       )
                 : EmptyAvator(controller: controller),
-      );
-
-  Widget bottomSheet(BuildContext context) => Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            TextWidget(size: 15, text: 'Choose Profile Picture', bold: false),
-          ],
-        ),
       );
 }
 

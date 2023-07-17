@@ -187,25 +187,58 @@ class SignUpPage extends StatelessWidget {
                                 if (mainController
                                         .confirmPasswordController.text !=
                                     mainController.passwordController.text) {
-                                  Get.defaultDialog(
-                                      title: "Password Error",
-                                      middleText: "Passwords Do not match",
-                                      textCancel: 'Quit');
-                                }
-                                if (mainController.isCheckedAgreement.value) {
-                                  mainController.registerNewUser(
-                                      email:
-                                          mainController.emailController.text,
-                                      password: mainController
-                                          .passwordController.text,
-                                      fullName: mainController
-                                          .fullNameController.text,
-                                      contact:
-                                          mainController.contactController.text,
-                                      location: selected);
+                                  Get.bottomSheet(Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                      color: Colors.grey,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              mainController.passwordController
+                                                  .clear();
+                                              mainController
+                                                  .confirmPasswordController
+                                                  .clear();
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.error,
+                                                  size: 40,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                TextWidget(
+                                                  size: 15,
+                                                  text:
+                                                      "Passwords Do not match",
+                                                  bold: false,
+                                                  color: Colors.white,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )));
                                 } else {
-                                  Get.snackbar('AGREEMENT',
-                                      'Agree to the Terms and Privacy Policy to continue');
+                                  if (mainController.isCheckedAgreement.value) {
+                                    mainController.registerNewUser(
+                                        email:
+                                            mainController.emailController.text,
+                                        password: mainController
+                                            .passwordController.text,
+                                        fullName: mainController
+                                            .fullNameController.text,
+                                        contact: mainController
+                                            .contactController.text,
+                                        location: selected);
+                                  } else {
+                                    Get.snackbar('AGREEMENT',
+                                        'Agree to the Terms and Privacy Policy to continue');
+                                  }
                                 }
                               }
                             }),

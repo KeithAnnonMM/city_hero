@@ -14,7 +14,9 @@ Future<void> addUserInfo({
         'fullName': fullName,
         'contact': contact,
         'location': location,
-        'email': email
+        'email': email,
+        'about': "",
+        'imagePath': "",
       })
       .then((value) => Get.snackbar('Success', 'Added Successfully'))
       .catchError(
