@@ -1,3 +1,5 @@
+import 'package:city_hero/screens/home/terms/terms_controller.dart';
+import 'package:city_hero/widgets/textwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +9,7 @@ class Terms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(TermsController());
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -25,6 +28,12 @@ class Terms extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      body: ListView(
+        children: [
+          Flexible(
+              child: TextWidget(size: 14, text: controller.terms, bold: false))
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
+import 'package:city_hero/models/user_model.dart';
 import 'package:city_hero/screens/home/alerts/details/alerts.dart';
 import 'package:city_hero/screens/home/mapview/map.dart';
-import 'package:city_hero/screens/home/profile/profile_controller.dart';
+import 'package:city_hero/screens/home/homepage/home_controller.dart';
 import 'package:city_hero/screens/home/safetytips/safety_tips.dart';
 import 'package:city_hero/screens/home/settings/settings.dart';
 import 'package:city_hero/screens/home/profile/profile.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
+    final controller = Get.put(HomeController());
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -139,47 +140,81 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  MyHeader(ProfileController controller) => Container(
-        height: 200,
-        width: double.infinity,
-        color: Color(0xFF16104a),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              controller.profilePath.value != ''
-                  ? Obx(
-                      () => CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            controller.profilePath.value.toString()),
-                        radius: 50,
-                      ),
-                    )
-                  : CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: Icon(
-                        Icons.person,
-                        size: 55,
-                        color: Colors.white,
-                      ),
-                      radius: 50,
+  MyHeader(HomeController controller) => FutureBuilder(
+      future: controller.data,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            UserModel dataFile = snapshot.data as UserModel;
+            return Container(
+              height: 200,
+              width: double.infinity,
+              color: Color(0xFF16104a),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    controller.data != ''
+                        ? CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(dataFile.imagePath.toString()),
+                            radius: 50,
+                          )
+                        : CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            child: Icon(
+                              Icons.person,
+                              size: 55,
+                              color: Colors.white,
+                            ),
+                            radius: 50,
+                          ),
+                    const SizedBox(height: 20),
+                    TextWidget(
+                        size: 12,
+                        text: '${auth.currentUser!.email}',
+                        bold: false,
+                        color: Colors.white),
+                    TextWidget(
+                        size: 15,
+                        text: '${dataFile.fullName}',
+                        bold: true,
+                        color: Colors.white),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+        return Container(
+            height: 200,
+            width: double.infinity,
+            color: Color(0xFF16104a),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Icon(
+                      Icons.person,
+                      size: 55,
+                      color: Colors.white,
                     ),
-              const SizedBox(height: 20),
-              TextWidget(
-                  size: 12,
-                  text: '${auth.currentUser!.email}',
-                  bold: false,
-                  color: Colors.white),
-              Obx(() => TextWidget(
-                  size: 15,
-                  text: '${controller.profileName.value}',
-                  bold: true,
-                  color: Colors.white))
-            ],
-          ),
-        ),
-      );
+                    radius: 50,
+                  ),
+                  const SizedBox(height: 20),
+                  TextWidget(
+                      size: 12,
+                      text: '${auth.currentUser!.email}',
+                      bold: false,
+                      color: Colors.white),
+                ],
+              ),
+            ));
+      });
 
   MyDrawerList(context) => Container(
         child: Padding(

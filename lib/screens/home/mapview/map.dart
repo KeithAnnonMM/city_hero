@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapViews extends StatelessWidget {
   const MapViews({super.key});
@@ -25,6 +26,9 @@ class MapViews extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(target: LatLng(0, 0)),
       ),
     );
   }
