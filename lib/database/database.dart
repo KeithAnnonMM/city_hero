@@ -18,7 +18,7 @@ Future<void> addUserInfo({
         'about': "",
         'imagePath': "",
       })
-      .then((value) => Get.snackbar('Success', 'Added Successfully'))
+      .then((value) => Get.snackbar('Verification', 'Verify your Email'))
       .catchError(
           (error) => Get.snackbar('Error', "Failed to add user: $error"));
 }

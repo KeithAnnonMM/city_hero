@@ -49,6 +49,8 @@ dependencies:
   http: ^1.1.0
   lottie: ^2.5.0
   fab_circular_menu: ^1.0.2
+  cached_network_image: ^3.2.3
+  flutter_settings_screens: ^0.3.3-null-safety+2
   
 
 dev_dependencies:

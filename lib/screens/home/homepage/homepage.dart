@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:city_hero/models/article_model.dart';
 import 'package:city_hero/models/user_model.dart';
 import 'package:city_hero/screens/home/alerts/details/alerts.dart';
@@ -64,6 +65,7 @@ class HomePage extends StatelessWidget {
                 return ListView.builder(
                   itemCount: articles!.length,
                   itemBuilder: (context, index) {
+                    print(articles[0].urlToImage);
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -75,10 +77,21 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image(
-                              image: NetworkImage(
-                                articles[index].urlToImage.toString(),
+                            CachedNetworkImage(
+                              key: UniqueKey(),
+                              imageUrl: articles[index].urlToImage.toString(),
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: 200,
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                color: Colors.red,
                               ),
+                              // placeholder: (context, url) =>
+                              //     LottieBuilder.asset(
+                              //   'assets/loading.json',
+                              //   height: 5,
+                              // ),
                             ),
                             TextWidget(
                               size: 14,

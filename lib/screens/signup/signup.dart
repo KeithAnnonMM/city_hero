@@ -1,3 +1,4 @@
+import 'package:city_hero/screens/home/terms/terms.dart';
 import 'package:city_hero/screens/signup/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,9 +69,10 @@ class SignUpPage extends StatelessWidget {
                           }).toList(),
                           onChanged: (selectedArea) {
                             selected = selectedArea.toString();
+                            mainController.parish = selectedArea.toString();
                           },
                           decoration: const InputDecoration(
-                            labelText: 'Area',
+                            labelText: 'Parish/Ward',
                             hintText: 'Select your Area of Residence',
                           ),
                         ),
@@ -157,9 +159,25 @@ class SignUpPage extends StatelessWidget {
                                   onChanged: (value) =>
                                       mainController.changeAgreement()),
                             ),
-                            Text(
-                              'I agree to the Terms and Privacy Policy',
-                              style: GoogleFonts.poppins(fontSize: 14),
+                            Row(
+                              children: [
+                                Text(
+                                  'I agree to the ',
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => Terms());
+                                  },
+                                  child: Text(
+                                    'Terms and Conditions',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -234,7 +252,7 @@ class SignUpPage extends StatelessWidget {
                                             .fullNameController.text,
                                         contact: mainController
                                             .contactController.text,
-                                        location: selected);
+                                        location: mainController.parish);
                                   } else {
                                     Get.snackbar('AGREEMENT',
                                         'Agree to the Terms and Privacy Policy to continue');

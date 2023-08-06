@@ -29,11 +29,32 @@ class Terms extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Flexible(
-              child: TextWidget(size: 14, text: controller.terms, bold: false))
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.article_outlined,
+                    size: 45,
+                    color: Color(0xFF16104a),
+                  ),
+                  const SizedBox(width: 20),
+                  TextWidget(
+                      size: 15, text: 'Last Updated: July, 2023', bold: true),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.all(8),
+                child:
+                    TextWidget(size: 13, text: controller.terms, bold: false),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

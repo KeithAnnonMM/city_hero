@@ -8,6 +8,7 @@ import '../../database/auth_controller.dart';
 class SignUpController extends GetxController {
   var isVisible1 = true.obs;
   var isVisible2 = true.obs;
+  var parish = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
