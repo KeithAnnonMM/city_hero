@@ -36,11 +36,6 @@ class LoginController extends GetxController {
   }
 
   void signInUser({required String email, required String password}) {
-    String message = AuthController.instance
-        .signInUser(email: email, password: password) as String;
-    if (message != "Success") {
-      Get.snackbar(
-          'Failed', 'Email and Password do not correspond to any user');
-    }
+    AuthController.instance.signInUser(email: email, password: password);
   }
 }

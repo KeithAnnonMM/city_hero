@@ -29,6 +29,13 @@
             {
               "client_id": "430525614074-0no6l4l7cj0mkptjdl49fkgu3ctivf14.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "430525614074-5v5f4jc4nti6dsjg7putpbl98tnr1369.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "groupb.members.cityHero.RunnerTests"
+              }
             }
           ]
         }

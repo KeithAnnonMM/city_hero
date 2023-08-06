@@ -85,16 +85,13 @@ class SignUpController extends GetxController {
     required String location,
     required String contact,
   }) {
-    String message = AuthController.instance.createNewAccount(
+    AuthController.instance.createNewAccount(
       email: email,
       password: password,
       fullName: fullName,
       location: location,
       contact: contact,
-    ) as String;
-    if (message != 'success') {
-      Get.snackbar('Failed Attempt', message);
-    }
+    );
   }
 
   Future<void> verifyEmail() async {

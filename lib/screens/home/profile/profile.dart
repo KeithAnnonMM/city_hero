@@ -222,13 +222,23 @@ class Profile extends StatelessWidget {
                                     children: [
                                       Icon(Icons.cases_outlined, size: 20),
                                       const SizedBox(width: 40),
-                                      Flexible(
-                                        child: TextWidget(
-                                          size: 14,
-                                          text: '${userModel.about}',
-                                          bold: false,
-                                        ),
-                                      ),
+                                      controller.bioTemp == ''
+                                          ? Flexible(
+                                              child: TextWidget(
+                                                size: 14,
+                                                text: '${userModel.about}',
+                                                bold: false,
+                                              ),
+                                            )
+                                          : Obx(
+                                              () => Flexible(
+                                                child: TextWidget(
+                                                  size: 14,
+                                                  text: '${controller.bioTemp}',
+                                                  bold: false,
+                                                ),
+                                              ),
+                                            ),
                                       const SizedBox(width: 10),
                                       IconButton(
                                         onPressed: () {

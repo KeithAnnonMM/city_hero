@@ -1,3 +1,4 @@
+import 'package:city_hero/models/article_model.dart';
 import 'package:city_hero/models/user_model.dart';
 import 'package:city_hero/screens/home/alerts/details/alerts.dart';
 import 'package:city_hero/screens/home/mapview/map.dart';
@@ -7,14 +8,15 @@ import 'package:city_hero/screens/home/settings/settings.dart';
 import 'package:city_hero/screens/home/profile/profile.dart';
 import 'package:city_hero/screens/home/support/support.dart';
 import 'package:city_hero/screens/home/terms/terms.dart';
+import 'package:city_hero/services/api_services.dart';
 import 'package:city_hero/widgets/textwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../database/firebase_constants.dart';
-import '../../../widgets/home_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,6 +24,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
+    final body_controller = Get.put(ApiServices());
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -52,79 +55,52 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child: GridView.count(
-              primary: false,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
-              children: [
-                HomeItem(
-                    icon: Icon(
-                      Icons.notification_important,
-                      size: 40,
-                      color: Colors.red,
-                    ),
-                    text: 'Alerts',
-                    function: () {},
-                    color: Colors.red),
-                HomeItem(
-                  icon: Icon(
-                    Icons.location_history,
-                    size: 40,
-                    color: Colors.green,
-                  ),
-                  text: 'Map',
-                  function: () {},
-                  color: Colors.green,
-                ),
-                HomeItem(
-                  icon: Icon(
-                    Icons.handshake_rounded,
-                    size: 40,
-                    color: Colors.black,
-                  ),
-                  text: 'Support',
-                  function: () {},
-                  color: Colors.black,
-                ),
-                HomeItem(
-                  icon: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Color.fromARGB(255, 4, 13, 34),
-                  ),
-                  text: 'Profile',
-                  function: () {
-                    Get.to(() => Profile());
+      body: FutureBuilder(
+          future: body_controller.getArticle(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                List<Article>? articles = snapshot.data;
+                return ListView.builder(
+                  itemCount: articles!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey[200],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image(
+                              image: NetworkImage(
+                                articles[index].urlToImage.toString(),
+                              ),
+                            ),
+                            TextWidget(
+                              size: 14,
+                              text: articles[index].title.toString(),
+                              bold: true,
+                            ),
+                            TextWidget(
+                                size: 13,
+                                text: articles[index].content.toString(),
+                                bold: false)
+                          ],
+                        ),
+                      ),
+                    );
                   },
-                  color: Color.fromARGB(255, 4, 13, 34),
-                ),
-                HomeItem(
-                  icon: Icon(
-                    Icons.safety_check,
-                    size: 40,
-                    color: Colors.brown,
-                  ),
-                  text: 'Safety Tips',
-                  function: () {},
-                  color: Colors.brown,
-                ),
-                HomeItem(
-                  icon: Icon(
-                    Icons.settings,
-                    size: 40,
-                    color: Colors.purple,
-                  ),
-                  text: 'Settings',
-                  function: () {
-                    Get.to(() => Settings());
-                  },
-                  color: Colors.purple,
-                ),
-              ])),
+                );
+              }
+            }
+            return Center(
+              child: LottieBuilder.asset('assets/loading.json'),
+            );
+          }),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -155,7 +131,7 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    controller.data != ''
+                    dataFile.imagePath != ''
                         ? CircleAvatar(
                             backgroundImage:
                                 NetworkImage(dataFile.imagePath.toString()),
